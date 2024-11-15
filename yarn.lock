@@ -830,10 +830,10 @@
   dependencies:
     chokidar "*"
 
-"@types/chrome@^0.0.242":
-  version "0.0.242"
-  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.242.tgz#bb1199fb885ff6d3e8d30dd81fe97e23bd9d6ecd"
-  integrity sha512-SeMXBSfcAGX9ezTz7Pro7n/AiNdIH3cetkdbM+Kfg3zD24jmbnm0IAEIxzx8ccqrnJenLCfD7fR+4WIYAbeQHw==
+"@types/chrome@^0.0.281":
+  version "0.0.281"
+  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.281.tgz#035ec5b0718aff0062ede3831041fe2585e0e57e"
+  integrity sha512-MH+8FFrJ1POZwKnKRBa+jZcVp+yCFxes6PYKvgFd0qLTzoQe+TdejC3dkA8gSs8UGjFKrKzu4AkZypmswv0NOg==
   dependencies:
     "@types/filesystem" "*"
     "@types/har-format" "*"
