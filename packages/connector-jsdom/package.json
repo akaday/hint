@@ -16,7 +16,7 @@
     "@hint/utils-fs": "^1.0.16",
     "@hint/utils-network": "^1.0.27",
     "@hint/utils-types": "^1.2.1",
-    "jsdom": "^21.1.0",
+    "jsdom": "^25.0.1",
     "mutationobserver-shim": "^0.3.7"
   },
   "description": "hint connector for JSDOM",
@@ -32,7 +32,7 @@
     "ava": "^4.3.3",
     "copyfiles": "^2.4.1",
     "eslint": "^7.32.0",
-    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-markdown": "^2.2.1",
     "lodash": "^4.17.21",
     "npm-run-all": "^4.1.5",
