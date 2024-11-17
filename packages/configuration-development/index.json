@@ -32,7 +32,13 @@
         "typescript-config/consistent-casing",
         "typescript-config/is-valid",
         "typescript-config/strict",
-        "typescript-config/target"
+        "typescript-config/target",
+        "webpack-config/config-exists",
+        "webpack-config/is-installed",
+        "webpack-config/is-valid",
+        "webpack-config/module-esnext-typescript",
+        "webpack-config/modules-false-babel",
+        "webpack-config/no-devtool-in-prod"
     ],
     "hintsTimeout": 10000,
     "parsers": [
