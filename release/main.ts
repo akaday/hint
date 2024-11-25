@@ -26,6 +26,7 @@ import { pushChanges } from './tasks/push-changes';
 import { installDependencies } from './tasks/install-dependencies';
 import { updateConfigurationAll } from './tasks/update-configuration-all';
 import { Parameters } from './@types/custom';
+import { resolveYarnLockConflicts } from '@hint/utils/dist/src/has-yarnlock';
 
 const ignoredPackages: string[] = [];
 
@@ -80,6 +81,11 @@ const tasks = new Listr([
         title: 'Install dependencies',
         skip: skipReasons(skipIfError, skipIfAborted, skipInstallation),
         task: taskErrorWrapper(installDependencies)
+    },
+    {
+        title: 'Resolve yarn.lock conflicts',
+        skip: skipReasons(skipIfError, skipIfAborted, skipInstallation),
+        task: taskErrorWrapper(resolveYarnLockConflicts)
     },
     {
         title: 'Update changelogs',

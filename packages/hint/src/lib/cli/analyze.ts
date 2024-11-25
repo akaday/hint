@@ -183,49 +183,25 @@ const getAnalyzer = async (userConfig: UserConfig, options: CreateAnalyzerOption
     } catch (e) {
         const error = e as AnalyzerError;
 
-        if (error.status === AnalyzerErrorStatus.ConfigurationError) {
-            const config = await askUserToUseDefaultConfiguration(targets);
-
-            if (!config) {
+        switch (error.status) {
+            case AnalyzerErrorStatus.ConfigurationError:
+                const config = await askUserToUseDefaultConfiguration(targets);
+                if (!config) throw e;
+                return getAnalyzer(config, options, targets);
+            case AnalyzerErrorStatus.ResourceError:
+                const installed = await askToInstallPackages(error.resources!);
+                if (!installed) throw e;
+                return getAnalyzer(userConfig, options, targets);
+            case AnalyzerErrorStatus.HintError:
+                logger.error(`Invalid hint configuration in .hintrc: ${error.invalidHints!.join(', ')}.`);
                 throw e;
-            }
-
-            return getAnalyzer(config, options, targets);
-        }
-
-        /* istanbul ignore else */
-        if (error.status === AnalyzerErrorStatus.ResourceError) {
-            const installed = await askToInstallPackages(error.resources!);
-
-            /* istanbul ignore else */
-            if (!installed) {
+            case AnalyzerErrorStatus.ConnectorError:
+                logger.error(`Invalid connector configuration in .hintrc`);
                 throw e;
-            }
-
-            return getAnalyzer(userConfig, options, targets);
+            default:
+                logger.error((e as Error).message, e);
+                throw e;
         }
-
-        /* istanbul ignore next */
-        if (error.status === AnalyzerErrorStatus.HintError) {
-            logger.error(`Invalid hint configuration in .hintrc: ${error.invalidHints!.join(', ')}.`);
-
-            throw e;
-        }
-
-        /* istanbul ignore next */
-        if (error.status === AnalyzerErrorStatus.ConnectorError) {
-            logger.error(`Invalid connector configuration in .hintrc`);
-
-            throw e;
-        }
-
-        /*
-         * If the error is not an AnalyzerErrorStatus
-         * bubble up the exception.
-         */
-        logger.error((e as Error).message, e);
-
-        throw e;
     }
 
     return webhint;

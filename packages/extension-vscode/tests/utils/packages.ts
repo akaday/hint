@@ -15,7 +15,12 @@ const stubContext = () => {
             run(command: string) {
                 return Promise.resolve();
             }
-        } as typeof import('../../src/utils/process')
+        } as typeof import('../../src/utils/process'),
+        '@hint/utils/dist/src/has-yarnlock': {
+            resolveYarnLockConflicts(directory: string) {
+                return Promise.resolve();
+            }
+        } as typeof import('@hint/utils/dist/src/has-yarnlock')
     };
 
     const module = proxyquire('../../src/utils/packages', stubs) as typeof _packages;
@@ -61,6 +66,7 @@ test('It installs via yarn if `yarn.lock` is present', async (t) => {
 
     const hasFileStub = sandbox.stub(stubs['./fs'], 'hasFile').resolves(true);
     const runSpy = sandbox.spy(stubs['./process'], 'run');
+    const resolveYarnLockConflictsSpy = sandbox.spy(stubs['@hint/utils/dist/src/has-yarnlock'], 'resolveYarnLockConflicts');
 
     await module.installPackages(['hint'], { cwd: 'foo' });
 
@@ -69,6 +75,8 @@ test('It installs via yarn if `yarn.lock` is present', async (t) => {
     t.is(hasFileStub.firstCall.args[1], 'foo');
     t.is(runSpy.callCount, 1);
     t.regex(runSpy.firstCall.args[0], /^yarn/);
+    t.is(resolveYarnLockConflictsSpy.callCount, 1);
+    t.is(resolveYarnLockConflictsSpy.firstCall.args[0], 'foo');
 
     sandbox.restore();
 });
