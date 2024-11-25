@@ -212,11 +212,14 @@
     };
 
     var endsWith = function (searchStr, str) {
+        if (typeof str.endsWith === 'function') {
+            return str.endsWith(searchStr);
+        }
         var length = str.length;
         var searchLength = searchStr.length;
         var position = str.indexOf(searchStr);
 
-        return (length - searchLength) === position;
+        return position !== -1 && (length - searchLength) === position;
     };
 
     var onPopState = function () {
