@@ -25,3 +25,21 @@ test(`resolves conflicts in yarn.lock file`, async (t) => {
 
     t.is(hasLockFile, true);
 });
+
+test(`resolves conflicts with multiple conflict markers in yarn.lock file`, async (t) => {
+    const dirWithYarnLock = path.join(__dirname, 'fixtures', 'dirWithMultipleConflicts');
+    await resolveYarnLockConflicts(dirWithYarnLock);
+
+    const hasLockFile = await hasYarnLock(dirWithYarnLock);
+
+    t.is(hasLockFile, true);
+});
+
+test(`resolves conflicts with nested conflict markers in yarn.lock file`, async (t) => {
+    const dirWithYarnLock = path.join(__dirname, 'fixtures', 'dirWithNestedConflicts');
+    await resolveYarnLockConflicts(dirWithYarnLock);
+
+    const hasLockFile = await hasYarnLock(dirWithYarnLock);
+
+    t.is(hasLockFile, true);
+});

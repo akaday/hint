@@ -22,7 +22,9 @@ export const resolveYarnLockConflicts = (directory: string): Promise<void> => {
                 return reject(err);
             }
 
-            const resolvedData = data.replace(/<<<<<<< HEAD[\s\S]*?=======([\s\S]*?)>>>>>>> [\s\S]*?\n/g, '$1');
+            const resolvedData = data.replace(/<<<<<<< HEAD[\s\S]*?=======([\s\S]*?)>>>>>>> [\s\S]*?\n/g, '$1')
+                                     .replace(/<<<<<<<[\s\S]*?=======([\s\S]*?)>>>>>>>[\s\S]*?\n/g, '$1')
+                                     .replace(/=======([\s\S]*?)>>>>>>>[\s\S]*?\n/g, '$1');
 
             writeFile(yarnLockPath, resolvedData, 'utf8', (err) => {
                 if (err) {
