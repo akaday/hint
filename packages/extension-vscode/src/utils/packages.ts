@@ -1,6 +1,6 @@
 import { hasFile } from './fs';
 import { run } from './process';
-import { resolveYarnLockConflicts } from '@hint/utils/dist/src/has-yarnlock';
+import { resolveYarnLockConflicts, hasYarnLock } from '@hint/utils/dist/src/has-yarnlock';
 
 export type LoadOptions = {
     paths?: string[];
