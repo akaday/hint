@@ -1,5 +1,6 @@
 import { hasFile } from './fs';
 import { run } from './process';
+import { resolveYarnLockConflicts, hasYarnLock } from '@hint/utils/dist/src/has-yarnlock';
 
 export type LoadOptions = {
     paths?: string[];
@@ -24,6 +25,7 @@ export const createPackageJson = async (cwd: string) => {
 /**
  * Install the provided packages to the specified location.
  * Uses `yarn` if `yarn.lock` exists, `npm` otherwise.
+ * Resolves conflicts in `yarn.lock` if any.
  */
 export const installPackages = async (packages: string[], options?: InstallOptions) => {
     const isUsingYarn = await hasFile('yarn.lock', options && options.cwd);
@@ -31,6 +33,10 @@ export const installPackages = async (packages: string[], options?: InstallOptio
     const npm = `npm${cmd} install ${packages.join(' ')} --save-dev --verbose`;
     const yarn = `yarn${cmd} add ${packages.join(' ')} --dev`;
     const command = isUsingYarn ? yarn : npm;
+
+    if (isUsingYarn) {
+        await resolveYarnLockConflicts(options && options.cwd);
+    }
 
     await run(command, options);
 };

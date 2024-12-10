@@ -14,6 +14,10 @@ type HasYarnLock = {
     hasYarnLock: () => Promise<boolean>;
 };
 
+type ResolveYarnLockConflicts = {
+    resolveYarnLockConflicts: () => Promise<void>;
+};
+
 type CWD = () => string;
 
 type Logger = {
@@ -39,6 +43,7 @@ type NPMContext = {
     findPackageRootModule: FindPackageRootModule;
     fs: Fs;
     hasYarnLock: HasYarnLock;
+    resolveYarnLockConflicts: ResolveYarnLockConflicts;
     loadJSONFileModule: LoadJSONFileModule;
     logger: Logger;
     npmRegistryFetch: NPMRegistryFetch;
@@ -69,6 +74,11 @@ const initContext = (t: ExecutionContext<NPMContext>) => {
             return Promise.resolve(false);
         }
     };
+    t.context.resolveYarnLockConflicts = {
+        resolveYarnLockConflicts() {
+            return Promise.resolve();
+        }
+    };
     t.context.loadJSONFileModule = (): string => {
         return '';
     };
@@ -94,7 +104,10 @@ const initContext = (t: ExecutionContext<NPMContext>) => {
 
 const loadScript = (context: NPMContext) => {
     return proxyquire('../src/npm', {
-        './has-yarnlock': context.hasYarnLock,
+        './has-yarnlock': {
+            hasYarnLock: context.hasYarnLock.hasYarnLock,
+            resolveYarnLockConflicts: context.resolveYarnLockConflicts.resolveYarnLockConflicts
+        },
         './logging': context.logger,
         './packages': { findPackageRoot: context.findPackageRootModule },
         '@hint/utils-fs': {
